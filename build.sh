@@ -13,7 +13,7 @@ fi
 
 mkdir -p "$BUILD_DIR"
 
-cmake -B "$BUILD_DIR"\
+cmake -B "$BUILD_DIR" \
 	-S . \
 	-DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
 	-DCMAKE_BUILD_TYPE=Debug \

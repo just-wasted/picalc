@@ -4,3 +4,7 @@
 !CMakeLists.txt
 !build.sh
 !toolchain.cmake
+!sysroot-symlinks.sh
+!.editorconfig
+!.clang-format
+!bak
