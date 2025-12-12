@@ -7,6 +7,8 @@ include_directories(SYSTEM
     ${CMAKE_SYSROOT}/usr/include/aarch64-linux-gnu
 )
 
+set(CMAKE_C_FLAGS "-L${CMAKE_SYSROOT}/usr/lib/aarch64-linux-gnu")
+
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_SYSROOT})
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
