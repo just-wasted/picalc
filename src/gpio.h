@@ -1,25 +1,4 @@
-// Register offsets for pointer to uint32_t according
-// to BCM2711 datasheet.
-// Example: offset 0x1c -> 28 Byte / 4 = 7
-
-// Register to set Output GPIOs HIGH
-#define GPIO_SET_0 7
-
-// Register to set Output GPIOIOs LOW
-#define GPIO_CLR_0 10
-
-// Register to read the level of GPIOIOs
-#define GPIO_LEV_0 13
-
-// Register to set pull-up / pull-down resistor
-// for GPIOIOs 0..15
-#define GPIO_PUD_0 57
-
-// Register to set pull-up / pull-down resistor
-// for GPIOs 16..31
-#define GPIO_PUD_1 58
-
-// Values for the function select registers
+// Values to set pin modes for the function select registers
 #define GPIO_INTPUT 000 // GPIO Pin is an input
 #define GPIO_OUTPUT 001 // GPIO Pin is an output
 #define GPIO_ALT0 100 // GPIO Pin takes alternate function 0
@@ -33,3 +12,10 @@
 #define GPIO_NOPUD 00 // No resistor is selected
 #define GPIO_PULL_DOWN 01 // Pull up resistor is selected
 #define GPIO_PULL_UP 10 // Pull down resistor is selected
+
+int gpioInitialise(void);
+
+int gpioCleanup(void);
+
+// takes a GPIO number and mode to set the pin to
+void gpioSetMode(unsigned gpio, unsigned mode);

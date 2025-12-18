@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# helper script to configure the sysroot from the raspi some with symlinks
+# helper script to configure the sysroot from the raspi with some symlinks
 
 argc=$#
 
