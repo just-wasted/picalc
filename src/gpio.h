@@ -1,4 +1,4 @@
-// Values to set pin modes for the function select registers
+// pin modes for the function select registers
 #define GPIO_INPUT 000 // GPIO Pin is an input
 #define GPIO_OUTPUT 001 // GPIO Pin is an output
 #define GPIO_ALT0 100 // GPIO Pin takes alternate function 0
@@ -8,7 +8,7 @@
 #define GPIO_ALT4 011 // GPIO Pin takes alternate function 4
 #define GPIO_ALT5 010 // GPIO Pin takes alternate function 5
 
-// values for pull-up / pull-down resistor states
+// pull-up / pull-down resistor states
 #define GPIO_NOPUD 00 // No resistor is selected
 #define GPIO_PULL_DOWN 01 // Pull up resistor is selected
 #define GPIO_PULL_UP 10 // Pull down resistor is selected
@@ -27,5 +27,5 @@ void gpio_set_pud(unsigned gpio, unsigned char pud_mode);
 // takes a GPIO number and returns its level: 0 = LOW, 1 = HIGH
 int gpio_read(unsigned gpio);
 
-// takes a GPIO number and sets the correspondig pin HIGH
+// takes a GPIO number and a level to set the pin
 void gpio_write(unsigned gpio, unsigned char level);
