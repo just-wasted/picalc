@@ -88,3 +88,12 @@ void gpio_set_pud(unsigned gpio, unsigned char pud_mode)
     // then set the new mode
     gpio_reg[offset] = (gpio_reg[offset] & ~(3 << shift)) | (pud_mode << shift);
 }
+
+int gpio_read(unsigned gpio)
+{
+    if ((*(gpio_reg + GPLEV0) & GPIO_BIT) == 1)
+    {
+        return 1;
+    }
+    return 0;
+}

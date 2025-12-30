@@ -23,3 +23,9 @@ void gpio_set_mode(unsigned gpio, unsigned char mode);
 
 // takes a GPIO number and pull-up/ -down mode to set
 void gpio_set_pud(unsigned gpio, unsigned char pud_mode);
+
+// takes a GPIO number and returns its level: 0 = LOW, 1 = HIGH
+int gpio_read(unsigned gpio);
+
+// takes a GPIO number and sets the correspondig pin HIGH
+void gpio_write(unsigned gpio, unsigned char level);
