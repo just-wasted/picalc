@@ -5,20 +5,16 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
-// Register offsets for pointer to uint32_t according
+// register offsets for pointer to uint32_t according
 // to BCM2711 datasheet. Example: offset 0x1c -> 28 Byte / 4 = 7
 
-#define GPIO_SET_0 7 // Register to set Output GPIOs HIGH
-#define GPIO_CLR_0 10 // Register to set Output GPIOs LOW
-#define GPIO_LEV_0 13 // Register to read the level of GPIOs
+#define GPSET0 7 // Register to set Output GPIOs HIGH
+#define GPCLR0 10 // Register to set Output GPIOs LOW
+#define GPLEV0 13 // Register to read the level of GPIOs
 
-// Register to set pull-up / pull-down resistor
-// for GPIOIOs 0..15
+// base register to set pull-up / pull-down resistor
+// bcm GPIO_PUP_PDN_CNTRL_REG0
 #define GPIO_PUD_0 57
-
-// Register to set pull-up / pull-down resistor
-// for GPIOs 16..31
-#define GPIO_PUD_1 58
 
 // shift to to the desired bit by the gpio nr
 // masked with 1F to ensure we stay in bounds
@@ -62,9 +58,9 @@ int gpio_cleanup(void)
     return 0;
 }
 
-void gpio_set_mode(unsigned gpio, unsigned char mode)
+void gpio_set_mode(unsigned gpio, unsigned char pin_mode)
 {
-    // register offset for GPFSEL function select register
+    // register offset for GPFSEL0 function select register
     // each register controls 10 gpios
     unsigned reg = gpio / 10;
 
@@ -74,5 +70,21 @@ void gpio_set_mode(unsigned gpio, unsigned char mode)
 
     // deref the register, set desired pin's mode bits to 0,
     // then set the new mode
-    gpio_reg[reg] = (gpio_reg[reg] & ~(7 << shift)) | (mode << shift);
+    gpio_reg[reg] = (gpio_reg[reg] & ~(7 << shift)) | (pin_mode << shift);
+}
+
+void gpio_set_pud(unsigned gpio, unsigned char pud_mode)
+{
+    // register offset for GPIO_PUD_0 function select register
+    // each register controls 15 gpios
+    unsigned reg = gpio / 15;
+
+    unsigned offset = GPIO_PUD_0 + reg;
+
+    // shift stepping, 2 bits per GPIO pin
+    unsigned shift = (gpio % 15) * 2;
+
+    // deref the register, set desired pin's pull-up or -down mode bits to 0,
+    // then set the new mode
+    gpio_reg[offset] = (gpio_reg[offset] & ~(3 << shift)) | (pud_mode << shift);
 }
