@@ -11,10 +11,8 @@ int main(void)
     {
         return -1;
     }
-    if (gpio_cleanup() == -1)
-    {
-        return -1;
-    }
+
+    gpio_cleanup();
     printf("Hello, pi\n");
     return 0;
 }

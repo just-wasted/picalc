@@ -8,7 +8,7 @@
 // register offsets for pointer to uint32_t according
 // to BCM2711 datasheet. Example: offset 0x1c -> 28 Byte / 4 = 7
 
-#define GPSET0 7 // Register to set Output GPIOs HIGH
+#define GPSET0 7  // Register to set Output GPIOs HIGH
 #define GPCLR0 10 // Register to set Output GPIOs LOW
 #define GPLEV0 13 // Register to read the level of GPIOs
 
@@ -51,11 +51,10 @@ int gpio_initialize(void)
     return 0;
 }
 
-int gpio_cleanup(void)
+void gpio_cleanup(void)
 {
     munmap((void *)gpio_reg, MAP_SIZE);
     gpio_reg = NULL;
-    return 0;
 }
 
 void gpio_set_mode(unsigned gpio, unsigned char pin_mode)
@@ -96,4 +95,16 @@ int gpio_read(unsigned gpio)
         return 1;
     }
     return 0;
+}
+
+void gpio_write(unsigned gpio, unsigned char level)
+{
+    if (level == 0)
+    {
+        *(gpio_reg + GPCLR0) = GPIO_BIT;
+    }
+    else
+    {
+        *(gpio_reg + GPSET0) = GPIO_BIT;
+    }
 }
