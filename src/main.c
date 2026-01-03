@@ -1,4 +1,5 @@
 #include "gpio.h"
+#include "keypad.h"
 #include "lcd.h"
 #include <fcntl.h>
 #include <stdio.h>
@@ -11,6 +12,8 @@ int main(void)
     {
         return -1;
     }
+
+    init_keypad();
 
     gpio_cleanup();
     printf("Hello, pi\n");

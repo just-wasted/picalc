@@ -12,7 +12,7 @@
 #define GPCLR0 10 // Register to set Output GPIOs LOW
 #define GPLEV0 13 // Register to read the level of GPIOs
 
-// base register to set pull-up / pull-down resistor
+// base register to set pull-up / pull-down resistors
 // bcm GPIO_PUP_PDN_CNTRL_REG0
 #define GPIO_PUD_0 57
 
@@ -72,7 +72,7 @@ void gpio_set_mode(unsigned gpio, unsigned char pin_mode)
     gpio_reg[reg] = (gpio_reg[reg] & ~(7 << shift)) | (pin_mode << shift);
 }
 
-void gpio_set_pud(unsigned gpio, unsigned char pud_mode)
+void gpio_pud_mode(unsigned gpio, unsigned char pud_mode)
 {
     // register offset for GPIO_PUD_0 function select register
     // each register controls 15 gpios
@@ -90,16 +90,16 @@ void gpio_set_pud(unsigned gpio, unsigned char pud_mode)
 
 int gpio_read(unsigned gpio)
 {
-    if ((*(gpio_reg + GPLEV0) & GPIO_BIT) == 1)
+    if ((*(gpio_reg + GPLEV0) & GPIO_BIT) == HIGH)
     {
-        return 1;
+        return HIGH;
     }
-    return 0;
+    return LOW;
 }
 
 void gpio_write(unsigned gpio, unsigned char level)
 {
-    if (level == 0)
+    if (level == LOW)
     {
         *(gpio_reg + GPCLR0) = GPIO_BIT;
     }
