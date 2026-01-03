@@ -1,13 +1,15 @@
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR aarch64)
-set(CMAKE_SYSROOT ${CMAKE_CURRENT_LIST_DIR}/../sysroot)
-set(CMAKE_C_COMPILER aarch64-linux-gnu-gcc)
 
-include_directories(SYSTEM
-    ${CMAKE_SYSROOT}/usr/include/aarch64-linux-gnu
+set(CMAKE_SYSROOT ${CMAKE_CURRENT_LIST_DIR}/../sysroot)
+
+set(CMAKE_C_COMPILER
+	${CMAKE_CURRENT_LIST_DIR}/../arm-gnu-toolchain/bin/aarch64-none-linux-gnu-gcc
 )
 
-set(CMAKE_C_FLAGS "-L${CMAKE_SYSROOT}/usr/lib/aarch64-linux-gnu")
+set(CMAKE_C_FLAGS_INIT
+	"-isystem ${CMAKE_SYSROOT}/usr/include/aarch64-linux-gnu"
+)
 
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_SYSROOT})
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
