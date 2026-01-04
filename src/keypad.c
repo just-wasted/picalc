@@ -13,7 +13,7 @@ void init_keypad(void)
     {
         gpio_set_mode(gpio_rows[i], GPIO_OUTPUT);
         gpio_set_mode(gpio_cols[i], GPIO_INPUT);
-        gpio_pud_mode(gpio_cols[i], GPIO_PULL_DOWN);
+        gpio_set_pud_mode(gpio_cols[i], GPIO_PULL_DOWN);
     }
 }
 
