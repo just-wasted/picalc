@@ -26,6 +26,9 @@ void gpio_cleanup(void);
 // takes a GPIO number and mode to set the pin to
 void gpio_set_mode(unsigned gpio, unsigned char mode);
 
+// takes a GPIO number and returns its pin mode
+unsigned char gpio_read_mode(unsigned gpio);
+
 // takes a GPIO number and pull-up/ -down mode to set
 void gpio_set_pud_mode(unsigned gpio, unsigned char pud_mode);
 

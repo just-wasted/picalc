@@ -1,3 +1,3 @@
 #pragma once
 
-void init_keypad(void);
+int init_keypad(void);
