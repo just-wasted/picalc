@@ -11,7 +11,7 @@
 
 static int lcd_fd = -1;
 
-int lcd_initialize(void)
+int lcd_init(void)
 {
     lcd_fd = open(LCD_IF, O_WRONLY);
     if (lcd_fd < 0)

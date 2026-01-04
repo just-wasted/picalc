@@ -13,7 +13,8 @@ int main(void)
         return -1;
     }
 
-    init_keypad();
+    keypad_init();
+    lcd_init();
 
     gpio_cleanup();
     printf("Hello, pi\n");
