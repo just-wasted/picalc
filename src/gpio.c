@@ -17,7 +17,7 @@
 #define GPIO_PUD_0 57
 
 // shift to to the desired bit by the gpio nr
-// masked with 1F to ensure we stay in bounds
+// masked with 1F for bounds checking
 #define GPIO_BIT (1 << (gpio & 0x1F))
 
 // size in Bytes of the memory to map all registers
