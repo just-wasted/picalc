@@ -91,13 +91,13 @@ unsigned char gpio_read_mode(unsigned gpio)
 void gpio_set_pud_mode(unsigned gpio, unsigned char pud_mode)
 {
     // register offset for GPIO_PUD_0 function select register
-    // each register controls 15 gpios
-    unsigned reg = gpio / 15;
+    // each register controls 16 gpios
+    unsigned reg = gpio / 16;
 
     unsigned offset = GPIO_PUD_0 + reg;
 
     // shift stepping, 2 bits per GPIO pin
-    unsigned shift = (gpio % 15) * 2;
+    unsigned shift = (gpio % 16) * 2;
 
     // deref the register, set desired pin's pull-up or -down mode bits to 0,
     // then set the new mode
@@ -107,13 +107,13 @@ void gpio_set_pud_mode(unsigned gpio, unsigned char pud_mode)
 unsigned char gpio_read_pud_mode(unsigned gpio)
 {
     // register offset for GPIO_PUD_0 function select register
-    // each register controls 15 gpios
-    unsigned reg = gpio / 15;
+    // each register controls 16 gpios
+    unsigned reg = gpio / 16;
 
     unsigned offset = GPIO_PUD_0 + reg;
 
     // shift stepping, 2 bits per GPIO pin
-    unsigned shift = (gpio % 15) * 2;
+    unsigned shift = (gpio % 16) * 2;
 
     // deref the register, apply mask to read mode bits
     unsigned mode = (gpio_reg[offset] & (3 << shift));
