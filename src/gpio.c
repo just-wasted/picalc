@@ -123,7 +123,7 @@ unsigned char gpio_read_pud_mode(unsigned gpio)
 
 int gpio_read_level(unsigned gpio)
 {
-    if ((*(gpio_reg + GPLEV0) & GPIO_BIT) == HIGH)
+    if ((*(gpio_reg + GPLEV0) & GPIO_BIT) != 0)
     {
         return HIGH;
     }
