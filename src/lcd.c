@@ -21,6 +21,7 @@ int lcd_init(void)
         return -1;
     }
 
+    lcd_display_clear();
     lcd_bl_on();
     return 0;
 }

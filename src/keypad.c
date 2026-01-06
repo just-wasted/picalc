@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#define DEBOUNCE_USEC 10000
+#define DEBOUNCE_USEC 5000
 #define SLEEP_USEC 300
 
 int keypad_init(keypad_t *kp)

@@ -1,7 +1,6 @@
 #include "gpio.h"
 #include "keypad.h"
 #include "lcd.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -13,6 +12,16 @@ keypad_t kp_0 = {
 
     .gpio_rows = {5, 6, 13, 19},
     .gpio_cols = {26, 16, 20, 21},
+};
+
+keypad_t kp_1 = {
+    .keys = {{'0', '0', '0', '0'},
+             {'0', '0', '0', '0'},
+             {'0', '0', '0', '0'},
+             {'0', '0', '0', '0'}},
+
+    .gpio_rows = {4, 17, 27, 22},
+    .gpio_cols = {23, 24, 25, 12},
 };
 
 char get_pi_char(void);
@@ -31,7 +40,12 @@ int main(void)
         return EXIT_FAILURE;
     }
 
-    for (int i = 0; i < 16; i++)
+    if (keypad_init(&kp_1) == -1)
+    {
+        return EXIT_FAILURE;
+    }
+
+    for (int i = 0; i < 25; i++)
     {
         char val = get_pi_char();
         lcd_write_char(val);
@@ -44,7 +58,6 @@ int main(void)
 
     lcd_cleanup();
     gpio_cleanup();
-    printf("Hello, pi\n");
     return EXIT_SUCCESS;
 }
 
@@ -54,8 +67,13 @@ char get_pi_char(void)
 
     while (input == 0)
     {
-        usleep(200);
+        usleep(100);
         input = read_keypad(&kp_0);
+        if (input)
+        {
+            break;
+        }
+        input = read_keypad(&kp_1);
     }
     return input;
 }
