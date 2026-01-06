@@ -8,6 +8,7 @@
 
 #define BL_ON "\e[L+"
 #define BL_OFF "\e[L-"
+#define DISPLAY_CLEAR '\f'
 
 static int lcd_fd = -1;
 
@@ -17,9 +18,10 @@ int lcd_init(void)
     if (lcd_fd < 0)
     {
         perror("Error opening display");
-        return 1;
+        return -1;
     }
 
+    lcd_bl_on();
     return 0;
 }
 
@@ -29,12 +31,41 @@ void lcd_cleanup(void)
     close(lcd_fd);
 }
 
+int lcd_write_str(char *str)
+{
+    if (write(lcd_fd, str, strlen(str)) == -1)
+    {
+        fprintf(stderr, "Error writing string to lcd: %s\n", str);
+        return -1;
+    }
+    return 0;
+}
+
+void lcd_display_clear(void)
+{
+    lcd_write_char(DISPLAY_CLEAR);
+}
+
+int lcd_write_char(char chr)
+{
+    char str[2];
+    str[0] = chr;
+    str[1] = '\0';
+
+    if (write(lcd_fd, str, strlen(str)) == -1)
+    {
+        fprintf(stderr, "Error writing char to lcd: %s\n", str);
+        return -1;
+    }
+    return 0;
+}
+
 void lcd_bl_on(void)
 {
-    write(lcd_fd, BL_ON, strlen(BL_ON));
+    lcd_write_str(BL_ON);
 }
 
 void lcd_bl_off(void)
 {
-    write(lcd_fd, BL_OFF, strlen(BL_OFF));
+    lcd_write_str(BL_OFF);
 }
