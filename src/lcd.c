@@ -41,11 +41,6 @@ int lcd_write_str(char *str)
     return 0;
 }
 
-void lcd_display_clear(void)
-{
-    lcd_write_char(DISPLAY_CLEAR);
-}
-
 int lcd_write_char(char chr)
 {
     char str[2];
@@ -58,6 +53,11 @@ int lcd_write_char(char chr)
         return -1;
     }
     return 0;
+}
+
+void lcd_display_clear(void)
+{
+    lcd_write_char(DISPLAY_CLEAR);
 }
 
 void lcd_bl_on(void)
