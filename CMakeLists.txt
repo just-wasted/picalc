@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
+set(CMAKE_C_STANDARD 23)
 project(picalc C)
 
 if(NOT CMAKE_BUILD_TYPE)

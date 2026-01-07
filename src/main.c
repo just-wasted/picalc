@@ -1,6 +1,8 @@
 #include "gpio.h"
+#include "history.h"
 #include "keypad.h"
 #include "lcd.h"
+#include "srledit.h"
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -10,7 +12,7 @@ keypad_t kp_0 = {
              {'7', '8', '9', 'C'},
              {'E', '0', 'F', 'D'}},
 
-    .keys_alt = {0},
+    .keys_alt = {{0}},
 
     .gpio_rows = {5, 6, 13, 19},
     .gpio_cols = {26, 16, 20, 21},
@@ -18,7 +20,7 @@ keypad_t kp_0 = {
 
 keypad_t kp_1 = {
     .keys = {{'+', '-', '*', '/'},
-             {-21, -20, -19, -18},
+             {-21, '^', -19, -18},
              {'(', -16, ')', '.'},
              {'<', -12, '>', '='}},
 
@@ -27,8 +29,6 @@ keypad_t kp_1 = {
     .gpio_rows = {4, 17, 27, 22},
     .gpio_cols = {23, 24, 25, 12},
 };
-
-char get_pi_char(void);
 
 int main(void)
 {
@@ -53,42 +53,9 @@ int main(void)
         return EXIT_FAILURE;
     }
 
-    for (int i = 0; i < 10; i++)
+    if (get_input(&kp_0, &kp_1) == NULL)
     {
-
-        char val = get_pi_char();
-        int flag_processed = 0;
-
-        switch (val)
-        {
-        case 'D':
-            flag_processed = 1;
-            break;
-
-        case 'E':
-            flag_processed = 1;
-            break;
-
-        case 'A':
-            lcd_schift_cursor_right();
-            flag_processed = 1;
-            break;
-
-        case '1':
-            lcd_schift_cursor_left();
-            flag_processed = 1;
-            break;
-
-        case '6':
-            lcd_display_clear();
-            flag_processed = 1;
-            break;
-        }
-
-        if (!flag_processed)
-        {
-            lcd_write_char(val);
-        }
+        return EXIT_FAILURE;
     }
 
     if (keypad_cleanup(&kp_0) == -1)
@@ -96,24 +63,8 @@ int main(void)
         return EXIT_FAILURE;
     }
 
+    history_cleanup();
     lcd_cleanup();
     gpio_cleanup();
     return EXIT_SUCCESS;
-}
-
-char get_pi_char(void)
-{
-    char input = 0;
-
-    while (input == 0)
-    {
-        usleep(100);
-        input = read_keypad(&kp_0);
-        if (input)
-        {
-            break;
-        }
-        input = read_keypad(&kp_1);
-    }
-    return input;
 }
