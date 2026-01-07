@@ -35,6 +35,7 @@ int gpio_initialize(void)
     if (gpio_fd < 0)
     {
         fprintf(stderr, "Failed to open /dev/gpiomem\n");
+        fflush(stderr);
         return -1;
     }
     // map the memory object gpio_fd into our process' adress space
@@ -46,6 +47,7 @@ int gpio_initialize(void)
     if (gpio_reg == MAP_FAILED)
     {
         fprintf(stderr, "Failed to map GPIO memory\n");
+        fflush(stderr);
         return -1;
     }
     return 0;

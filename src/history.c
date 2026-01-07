@@ -22,6 +22,7 @@ int history_add(string_t *string_t_ptr)
     if (new == NULL)
     {
         fprintf(stderr, "Error alocating memory in history_add");
+        fflush(stderr);
         return -1;
     }
 

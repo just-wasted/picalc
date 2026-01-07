@@ -40,8 +40,8 @@ moves the cursor to position x y
 */
 void lcd_goto(int x, int y);
 
-void lcd_schift_cursor_right(void);
-void lcd_schift_cursor_left(void);
+void lcd_shift_cursor_right(void);
+void lcd_shift_cursor_left(void);
 
-void lcd_schift_display_right(void);
-void lcd_schift_display_left(void);
+void lcd_shift_display_right(void);
+void lcd_shift_display_left(void);

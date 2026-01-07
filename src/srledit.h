@@ -4,6 +4,15 @@
 
 #define INPUT_BUFFER_SIZE 256
 
+/*
+custom key codes
+*/
+#define HDO -12 // search history down
+#define HUP -16 // search history up
+#define ALT -18 // toggle ALT mode
+#define SQR -19 // square root
+#define DEL -21 // delete char
+
 typedef struct string_t
 {
     char str[INPUT_BUFFER_SIZE]; // string data

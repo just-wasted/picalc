@@ -32,7 +32,7 @@ char *get_input(keypad_t *kp_0_ptr, keypad_t *kp_1_ptr)
     while (1)
     {
 
-        char input_chr = 0;
+        signed char input_chr = 0;
 
         while (input_chr == 0)
         {
@@ -54,6 +54,7 @@ char *get_input(keypad_t *kp_0_ptr, keypad_t *kp_1_ptr)
             if (return_str == NULL)
             {
                 fprintf(stderr, "Error allocating memory for return_str");
+                fflush(stderr);
                 return NULL;
             }
 
@@ -62,22 +63,29 @@ char *get_input(keypad_t *kp_0_ptr, keypad_t *kp_1_ptr)
             input_str = NULL;
             return return_str;
 
-        case 'E':
+        case '>':
+            lcd_shift_cursor_right();
             flag_processed = 1;
             break;
 
-        case 'A':
-            lcd_schift_cursor_right();
+        case '<':
+            lcd_shift_cursor_left();
+            lcd_shift_cursor_left();
             flag_processed = 1;
             break;
 
-        case '1':
-            lcd_schift_cursor_left();
+        case ALT:
+            toggle_alt_mode();
             flag_processed = 1;
             break;
 
-        case '6':
-            lcd_display_clear();
+        case DEL:
+            if (remove_char(input_str) == 0)
+            {
+                lcd_shift_cursor_left();
+                lcd_write_char(' ');
+                lcd_shift_cursor_left();
+            }
             flag_processed = 1;
             break;
         }
@@ -113,7 +121,7 @@ int remove_char(string_t *buffer)
 {
     if (buffer->len <= 1)
     {
-        return 0; // do nothing of there is no string data to remove
+        return 1; // do nothing of there is no string data to remove
     }
 
     // check if cursor is at the end of the string
@@ -124,6 +132,7 @@ int remove_char(string_t *buffer)
         buffer->cursor_pos--;
         buffer->len--;
     }
+
     // TODO: check if cursor is not at \0 and shift buffer contents accordingly
     return 0;
 }
@@ -134,6 +143,7 @@ string_t *new_input_str(void)
     if (new == NULL)
     {
         fprintf(stderr, "Error allocating memory in new_input_str()");
+        fflush(stderr);
         return NULL;
     }
     new->cursor_pos = 0;

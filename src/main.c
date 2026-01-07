@@ -3,6 +3,7 @@
 #include "keypad.h"
 #include "lcd.h"
 #include "srledit.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -20,11 +21,11 @@ keypad_t kp_0 = {
 
 keypad_t kp_1 = {
     .keys = {{'+', '-', '*', '/'},
-             {-21, '^', -19, -18},
-             {'(', -16, ')', '.'},
-             {'<', -12, '>', '='}},
+             {DEL, '^', SQR, ALT},
+             {'(', HUP, ')', '.'},
+             {'<', HDO, '>', '='}},
 
-    .keys_alt = {[0] = {0, 0, 0, '%'}},
+    .keys_alt = {[0] = {0, 0, 0, '%'}, [1] = {0, 0, 0, ALT}},
 
     .gpio_rows = {4, 17, 27, 22},
     .gpio_cols = {23, 24, 25, 12},
@@ -53,10 +54,13 @@ int main(void)
         return EXIT_FAILURE;
     }
 
-    if (get_input(&kp_0, &kp_1) == NULL)
+    char *input = get_input(&kp_0, &kp_1);
+    if (input == NULL)
     {
         return EXIT_FAILURE;
     }
+
+    printf("%s", input);
 
     if (keypad_cleanup(&kp_0) == -1)
     {

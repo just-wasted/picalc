@@ -40,6 +40,7 @@ int lcd_init(void)
     lcd_display_clear();
     lcd_bl_on();
     lcd_cursor_on();
+    lcd_blink_off();
 
     return 0;
 }
@@ -122,22 +123,22 @@ void lcd_goto(int x, int y)
     lcd_write_str(str);
 }
 
-void lcd_schift_cursor_right(void)
+void lcd_shift_cursor_right(void)
 {
     lcd_write_str(SHIFT_CURSOR_R);
 }
 
-void lcd_schift_cursor_left(void)
+void lcd_shift_cursor_left(void)
 {
     lcd_write_str(SHIFT_CURSOR_L);
 }
 
-void lcd_schift_display_right(void)
+void lcd_shift_display_right(void)
 {
     lcd_write_str(SHIFT_DISPLAY_R);
 }
 
-void lcd_schift_display_left(void)
+void lcd_shift_display_left(void)
 {
     lcd_write_str(SHIFT_DISPLAY_L);
 }

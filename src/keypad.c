@@ -25,6 +25,7 @@ int keypad_init(keypad_t *kp)
         {
             fprintf(stderr, "keypad init: Failed to set GPIO %d to OUTPUT\n",
                     kp->gpio_rows[i]);
+            fflush(stderr);
 
             ret_val = -1;
         }
@@ -32,6 +33,7 @@ int keypad_init(keypad_t *kp)
         {
             fprintf(stderr, "keypad init: Failed to set GPIO %d to INPUT\n",
                     kp->gpio_cols[i]);
+            fflush(stderr);
 
             ret_val = -1;
         }
@@ -40,6 +42,7 @@ int keypad_init(keypad_t *kp)
             fprintf(stderr,
                     "keypad init: Failed to set PULL DOWN for GPIO %d\n",
                     kp->gpio_cols[i]);
+            fflush(stderr);
 
             ret_val = -1;
         }
@@ -66,6 +69,7 @@ int keypad_cleanup(keypad_t *kp)
             fprintf(stderr,
                     "keypad cleanup: Failed to set GPIO %d to level LOW\n",
                     kp->gpio_rows[i]);
+            fflush(stderr);
 
             ret_val = -1;
         }
@@ -73,6 +77,7 @@ int keypad_cleanup(keypad_t *kp)
         {
             fprintf(stderr, "keypad cleanup: Failed to set GPIO %d to INPUT\n",
                     kp->gpio_cols[i]);
+            fflush(stderr);
 
             ret_val = -1;
         }
@@ -81,6 +86,7 @@ int keypad_cleanup(keypad_t *kp)
             fprintf(stderr,
                     "keypad cleanup: Failed to set PULL DOWN for GPIO %d\n",
                     kp->gpio_cols[i]);
+            fflush(stderr);
 
             ret_val = -1;
         }
