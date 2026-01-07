@@ -10,15 +10,19 @@ keypad_t kp_0 = {
              {'7', '8', '9', 'C'},
              {'E', '0', 'F', 'D'}},
 
+    .keys_alt = {0},
+
     .gpio_rows = {5, 6, 13, 19},
     .gpio_cols = {26, 16, 20, 21},
 };
 
 keypad_t kp_1 = {
-    .keys = {{'0', '0', '0', '0'},
-             {'0', '0', '0', '0'},
-             {'0', '0', '0', '0'},
-             {'0', '0', '0', '0'}},
+    .keys = {{'+', '-', '*', '/'},
+             {-21, -20, -19, -18},
+             {'(', -16, ')', '.'},
+             {'<', -12, '>', '='}},
+
+    .keys_alt = {[0] = {0, 0, 0, '%'}},
 
     .gpio_rows = {4, 17, 27, 22},
     .gpio_cols = {23, 24, 25, 12},
@@ -28,7 +32,11 @@ char get_pi_char(void);
 
 int main(void)
 {
-    lcd_init();
+
+    if (lcd_init() == -1)
+    {
+        return EXIT_FAILURE;
+    }
 
     if (gpio_initialize() == -1)
     {
@@ -45,10 +53,42 @@ int main(void)
         return EXIT_FAILURE;
     }
 
-    for (int i = 0; i < 25; i++)
+    for (int i = 0; i < 10; i++)
     {
+
         char val = get_pi_char();
-        lcd_write_char(val);
+        int flag_processed = 0;
+
+        switch (val)
+        {
+        case 'D':
+            flag_processed = 1;
+            break;
+
+        case 'E':
+            flag_processed = 1;
+            break;
+
+        case 'A':
+            lcd_schift_cursor_right();
+            flag_processed = 1;
+            break;
+
+        case '1':
+            lcd_schift_cursor_left();
+            flag_processed = 1;
+            break;
+
+        case '6':
+            lcd_display_clear();
+            flag_processed = 1;
+            break;
+        }
+
+        if (!flag_processed)
+        {
+            lcd_write_char(val);
+        }
     }
 
     if (keypad_cleanup(&kp_0) == -1)

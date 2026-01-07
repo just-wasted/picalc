@@ -9,9 +9,11 @@ example key layout:
 */
 typedef struct
 {
-    const char keys[4][4];  // list of characters assigned to each key
-    const int gpio_rows[4]; // GPIO pin numbers wired to keypad rows
-    const int gpio_cols[4]; // GPIO pin numbers wired to keypad columns
+    const char keys[4][4];     // list of characters assigned to each key
+    const char keys_alt[4][4]; // list of alt chars assigned to each key
+
+    const int gpio_rows[4];    // GPIO pin numbers wired to keypad rows
+    const int gpio_cols[4];    // GPIO pin numbers wired to keypad columns
 } keypad_t;
 
 /*

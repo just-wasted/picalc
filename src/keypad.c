@@ -1,5 +1,6 @@
 #include "keypad.h"
 #include "gpio.h"
+#include "state.h"
 #include <stdio.h>
 #include <unistd.h>
 
@@ -118,7 +119,11 @@ char read_keypad(keypad_t *kp)
                 // debounce button release
                 usleep(DEBOUNCE_USEC);
 
-                return kp->keys[current_row][curren_col];
+                if (!get_alt_mode())
+                {
+                    return kp->keys[current_row][curren_col];
+                }
+                return kp->keys_alt[current_row][curren_col];
             }
             usleep(DEBOUNCE_USEC);
         }
