@@ -60,7 +60,9 @@ int main(void)
         return EXIT_FAILURE;
     }
 
-    printf("%s", input);
+    printf("%s\n", input);
+
+    free(input);
 
     if (keypad_cleanup(&kp_0) == -1)
     {
