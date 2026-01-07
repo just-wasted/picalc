@@ -14,8 +14,7 @@ turns backlight off
 void lcd_cleanup(void);
 
 /*
-receives a char to write to the lcd fd,
-returns -1 on error
+wrapper around lcd_write_str to write single characters
 */
 int lcd_write_char(char chr);
 

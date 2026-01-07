@@ -23,9 +23,6 @@
 #define SHIFT_DISPLAY_R "\e[LR"
 #define SHIFT_DISPLAY_L "\e[LL"
 
-#define SMALL_FONT "\e[Lf"
-#define LARGE_FONT "\e[LF"
-
 #define GO_LINE(y) "\e[Ly" #y ";"
 #define GO_COLUMN(x) "\e[Lx" #x ";"
 
@@ -33,7 +30,6 @@ static int lcd_fd = -1;
 
 int lcd_init(void)
 {
-    int lcd_fd = -1;
     lcd_fd = open(LCD_IF, O_WRONLY);
     if (lcd_fd < 0)
     {
@@ -60,7 +56,7 @@ int lcd_write_str(char *str)
 {
     if (write(lcd_fd, str, strlen(str)) == -1)
     {
-        fprintf(stderr, "Error writing string to lcd: %s\n", str);
+        perror("lcd_write_str");
         return -1;
     }
     usleep(200);
@@ -73,12 +69,7 @@ int lcd_write_char(char chr)
     str[0] = chr;
     str[1] = '\0';
 
-    if (write(lcd_fd, str, strlen(str)) == -1)
-    {
-        fprintf(stderr, "Error writing char to lcd: %s\n", str);
-        return -1;
-    }
-    usleep(200);
+    lcd_write_str(str);
     return 0;
 }
 
