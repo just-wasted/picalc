@@ -39,7 +39,7 @@ int history_add(string_t *string_t_ptr)
     }
     else
     {
-        new->index = tail->index++;
+        new->index = tail->index + 1;
         tail->next = new;
         new->previous = tail;
         new->next = NULL;
