@@ -1,3 +1,4 @@
+#include "eval.h"
 #include "gpio.h"
 #include "history.h"
 #include "keypad.h"
@@ -55,12 +56,17 @@ int main(void)
     }
 
     char *input = get_input(&kp_0, &kp_1);
+
     if (input == NULL)
     {
         return EXIT_FAILURE;
     }
 
     printf("%s\n", input);
+
+    str_tokens_t tk_list;
+    tokenize_str(input, &tk_list);
+    eval_token(&tk_list);
 
     free(input);
 
@@ -70,7 +76,7 @@ int main(void)
     }
 
     history_cleanup();
-    lcd_cleanup();
+    // lcd_cleanup();
     gpio_cleanup();
     return EXIT_SUCCESS;
 }

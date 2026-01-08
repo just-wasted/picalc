@@ -23,6 +23,6 @@ typedef struct string_t
 /*
 receives pointers to input nodes,
 returns a string which must be freed,
-appends history which must be freed with history_cleanup,
+appends history which must be freed with history_cleanup(),
 */
 char *get_input(keypad_t *kp_0_ptr, keypad_t *kp_1_ptr);
