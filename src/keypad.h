@@ -1,14 +1,18 @@
 #pragma once
 
+#define KP_WIDTH 4
+
 /*
 contains data representing a keypad
 */
 typedef struct keypad_t
 {
-    const char keys[4][4];     // list of characters assigned to each key
-    const char keys_alt[4][4]; // list of alt chars assigned to each key
-    const int gpio_rows[4];    // GPIO pin numbers wired to keypad rows
-    const int gpio_cols[4];    // GPIO pin numbers wired to keypad columns
+    // list of characters assigned to each key
+    const char keys[KP_WIDTH][KP_WIDTH];
+    // list of alt chars assigned to each key
+    const char keys_alt[KP_WIDTH][KP_WIDTH];
+    const int gpio_rows[KP_WIDTH]; // GPIO pin numbers wired to keypad rows
+    const int gpio_cols[KP_WIDTH]; // GPIO pin numbers wired to keypad columns
 } keypad_t;
 
 /*

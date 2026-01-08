@@ -9,7 +9,7 @@
 
 int keypad_init(keypad_t *kp)
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < KP_WIDTH; i++)
     {
         gpio_set_mode(kp->gpio_rows[i], GPIO_OUTPUT);
         gpio_set_mode(kp->gpio_cols[i], GPIO_INPUT);
@@ -19,7 +19,7 @@ int keypad_init(keypad_t *kp)
 
     // check if above settings applied successfully
     int ret_val = 0;
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < KP_WIDTH; i++)
     {
         if (gpio_read_mode(kp->gpio_rows[i]) != GPIO_OUTPUT)
         {
@@ -52,7 +52,7 @@ int keypad_init(keypad_t *kp)
 
 int keypad_cleanup(keypad_t *kp)
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < KP_WIDTH; i++)
     {
         gpio_write_level(kp->gpio_rows[i], LOW);
         gpio_set_mode(kp->gpio_rows[i], GPIO_INPUT);
@@ -62,7 +62,7 @@ int keypad_cleanup(keypad_t *kp)
 
     // check if above settings applied successfully
     int ret_val = 0;
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < KP_WIDTH; i++)
     {
         if (gpio_read_level(kp->gpio_rows[i]) != LOW)
         {
@@ -96,10 +96,10 @@ int keypad_cleanup(keypad_t *kp)
 
 char read_keypad(keypad_t *kp)
 {
-    for (int current_row = 0; current_row < 4; current_row++)
+    for (int current_row = 0; current_row < KP_WIDTH; current_row++)
     {
         // set current_row HIGH, all other rows LOW
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < KP_WIDTH; i++)
         {
             if (i == current_row)
             {
@@ -112,7 +112,7 @@ char read_keypad(keypad_t *kp)
         }
         usleep(SLEEP_USEC);
 
-        for (int curren_col = 0; curren_col < 4; curren_col++)
+        for (int curren_col = 0; curren_col < KP_WIDTH; curren_col++)
         {
             if (gpio_read_level(kp->gpio_cols[curren_col]) == HIGH)
             {
