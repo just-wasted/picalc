@@ -1,5 +1,8 @@
 #pragma once
 
+#define LCD_ROWS 2
+#define LCD_COLS 16
+
 /*
 initializes the lcd,
 returns -1 on error
@@ -24,7 +27,12 @@ returns -1 on error
 */
 int lcd_write_str(char *str);
 
-void lcd_display_clear(void);
+void lcd_clear_display(void);
+
+/*
+receives a line number to clear
+*/
+void lcd_clear_line(int line);
 
 void lcd_bl_on(void);
 void lcd_bl_off(void);

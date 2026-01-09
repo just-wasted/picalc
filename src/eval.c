@@ -1,47 +1,20 @@
 #include "eval.h"
-#include "lcd.h"
+#include "ui.h"
+#include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-// token_types
-// #define OPERATOR 0
-// #define NUMBER 1
-
-// typedef struct str_token
-// {
-//     char *start;
-//     char *end;
-//     int token_type;
-//     struct str_tokens *next;
-// } str_token;
-
-// str_token *init_list(void);
-// void append_list(str_token *list);
-
-void add(long num_1, long num_2);
-void sub(long num_1, long num_2);
-void mul(long num_1, long num_2);
-void div(long num_1, long num_2);
-int count_digits(long num);
+char *add(float num_1, float num_2);
+char *subtract(float num_1, float num_2);
+char *multiply(float num_1, float num_2);
+char *divide(float num_1, float num_2);
+char *float_to_str(float num);
+int count_digits(long long num);
 
 int tokenize_str(char *str, str_tokens_t *list)
 {
-    // str_token *token_list = malloc(sizeof(str_token));
-    // token_list->next = NULL;
-
-    // str_token *head = token_list;
-    // str_token *cursor = token_list;
-    // int i = 0;
-    // char chr = str[0];
-    // int in_token = 0;
-    //
-    // while (chr != '\0')
-    // {
-    //     i++;
-    //     chr = str[i];
-    // }
-
     int items_read =
-        sscanf(str, "%ld%c%ld", &list->num_1, &list->operator, &list->num_2);
+        sscanf(str, "%f%c%f", &list->num_1, &list->operator, &list->num_2);
 
     if (items_read != 3)
     {
@@ -49,87 +22,108 @@ int tokenize_str(char *str, str_tokens_t *list)
     }
 
     printf("\n");
-    printf("num_1: %ld\n", list->num_1);
+    printf("num_1: %f\n", list->num_1);
     printf("operator: %c\n", list->operator);
-    printf("num_2: %ld\n", list->num_2);
+    printf("num_2: %f\n", list->num_2);
 
     return 0;
 }
 
 int eval_token(str_tokens_t *tk_list)
 {
+    char *str;
     switch (tk_list->operator)
     {
     case '+':
-        add(tk_list->num_1, tk_list->num_2);
+        str = add(tk_list->num_1, tk_list->num_2);
+        ui_store_eval(str);
+        free(str);
         break;
 
     case '-':
-        sub(tk_list->num_1, tk_list->num_2);
+        str = subtract(tk_list->num_1, tk_list->num_2);
+        ui_store_eval(str);
+        free(str);
         break;
 
     case '*':
-        mul(tk_list->num_1, tk_list->num_2);
+        str = multiply(tk_list->num_1, tk_list->num_2);
+        ui_store_eval(str);
+        free(str);
         break;
 
     case '/':
-        div(tk_list->num_1, tk_list->num_2);
+        str = divide(tk_list->num_1, tk_list->num_2);
+        ui_store_eval(str);
+        free(str);
         break;
     }
+
+    ui_print_eval();
+    str = NULL;
     return 0;
 }
 
-void add(long num_1, long num_2)
+char *add(float num_1, float num_2)
 {
-    long val = num_1 + num_2;
+    float val = num_1 + num_2;
 
-    int len = count_digits(val) + 3;
-    char val_str[len];
-    snprintf(val_str, len, "= %ld", val);
-    printf("string: %s\n", val_str);
-    printf("nr digits: %d\n", len);
-    fflush(stdout);
-    lcd_write_str(val_str);
+    return float_to_str(val);
 }
 
-void sub(long num_1, long num_2)
+char *subtract(float num_1, float num_2)
 {
-    long val = num_1 - num_2;
+    float val = num_1 - num_2;
 
-    int len = count_digits(val) + 3;
-    char val_str[len];
-    snprintf(val_str, len, "= %ld", val);
-
-    lcd_write_str(val_str);
+    return float_to_str(val);
 }
 
-void mul(long num_1, long num_2)
+char *multiply(float num_1, float num_2)
 {
-    long val = num_1 * num_2;
+    float val = num_1 * num_2;
 
-    int len = count_digits(val) + 3;
-    char val_str[len];
-    snprintf(val_str, len, "= %ld", val);
-
-    lcd_write_str(val_str);
+    return float_to_str(val);
 }
 
-void div(long num_1, long num_2)
+char *divide(float num_1, float num_2)
 {
-    float val = (float)num_1 / (float)num_2;
+    float val = num_1 / num_2;
 
-    int len = count_digits((long)val) + 6;
-    char val_str[len];
-
-    snprintf(val_str, len, "= %f.3", val);
-
-    lcd_write_str(val_str);
+    return float_to_str(val);
 }
 
-int count_digits(long num)
+char *float_to_str(float num)
+{
+    // count digits before decimal point
+    int nr_digits = count_digits((long long)num);
+    char *val_str = NULL;
+
+    // check if number contains decimals
+    if (fmodf(num, 1) != 0)
+    {
+        // nr_digits: add 5 for precision,1 for the decimal point
+        val_str = malloc(sizeof(char) * (nr_digits + 6));
+        snprintf(val_str, nr_digits, "%f.5", num);
+        printf("assuming decimals!\n");
+        fflush(stderr);
+    }
+    else
+    {
+        val_str = malloc(sizeof(char) * nr_digits);
+        snprintf(val_str, nr_digits, "%lld", (long long)num);
+    }
+
+    return val_str;
+}
+
+int count_digits(long long num)
 {
     int remainder = 1;
-    int count = 1;
+
+    // initialize count with 2:
+    // 1 for /0
+    // 1 for missing count++ from remainder == 0
+    int count = 2;
 
     while (remainder != 0)
     {

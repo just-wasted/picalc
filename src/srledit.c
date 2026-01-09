@@ -36,7 +36,6 @@ char *get_input(keypad_t *kp_0_ptr, keypad_t *kp_1_ptr)
 
     while (1)
     {
-
         signed char input_chr = 0;
 
         while (input_chr == 0)
@@ -152,7 +151,7 @@ int insert_char(string_t *buffer, int in_char)
         buffer->cursor_pos++;
         buffer->len++;
 
-        lcd_display_clear();
+        lcd_clear_display();
         lcd_write_str(buffer->str);
         lcd_goto(buffer->cursor_pos, 0);
     }
@@ -190,7 +189,7 @@ int remove_char(string_t *buffer)
         buffer->cursor_pos--;
         buffer->len--;
 
-        lcd_display_clear();
+        lcd_clear_display();
         lcd_write_str(buffer->str);
         lcd_goto(buffer->cursor_pos, 0);
     }

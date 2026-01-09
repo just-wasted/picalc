@@ -23,9 +23,6 @@
 #define SHIFT_DISPLAY_R "\e[LR"
 #define SHIFT_DISPLAY_L "\e[LL"
 
-#define GO_LINE(y) "\e[Ly" #y ";"
-#define GO_COLUMN(x) "\e[Lx" #x ";"
-
 static int lcd_fd = -1;
 
 int lcd_init(void)
@@ -37,7 +34,7 @@ int lcd_init(void)
         return -1;
     }
 
-    lcd_display_clear();
+    lcd_clear_display();
     lcd_bl_on();
     lcd_cursor_on();
     lcd_blink_off();
@@ -74,9 +71,19 @@ int lcd_write_char(char chr)
     return 0;
 }
 
-void lcd_display_clear(void)
+void lcd_clear_display(void)
 {
     lcd_write_char(DISPLAY_CLEAR);
+    usleep(200);
+}
+
+void lcd_clear_line(int line)
+{
+    lcd_goto(0, line);
+    usleep(200);
+    lcd_write_str("                ");
+    usleep(200);
+    lcd_goto(0, line);
     usleep(200);
 }
 

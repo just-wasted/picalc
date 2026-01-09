@@ -2,8 +2,8 @@
 
 typedef struct str_tokens_t
 {
-    long num_1;
-    long num_2;
+    float num_1;
+    float num_2;
     char operator;
 } str_tokens_t;
 
